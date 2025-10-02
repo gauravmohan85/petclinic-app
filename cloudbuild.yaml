@@ -1,6 +1,6 @@
 steps:
   # Step 1: Build the Java code using Maven
-  - name: 'maven:3.9.4-openjdk-20-slim'
+  - name: 'maven:3.9.4-eclipse-temurin-17'
     entrypoint: 'mvn'
     args:
       - 'clean'
