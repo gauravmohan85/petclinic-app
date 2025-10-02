@@ -21,3 +21,6 @@ substitutions:
   _REPOSITORY_NAME: 'petclinic-app'
   _LOCATION: 'europe-west1' # Adjust the region as needed
   _TAG_NAME: 'latest'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
