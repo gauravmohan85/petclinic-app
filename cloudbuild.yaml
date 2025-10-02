@@ -1,5 +1,13 @@
 steps:
-  # Step 1: Build the Docker image
+  # Step 1: Build the Java code using Maven
+  - name: 'maven:3.8.8-openjdk-17'
+    entrypoint: 'mvn'
+    args:
+      - 'clean'
+      - 'package'
+      - '-DskipTests'
+
+  # Step 2: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
@@ -7,7 +15,7 @@ steps:
       - '$_LOCATION-docker.pkg.dev/$_PROJECT_ID/$_REPOSITORY_NAME/spring-petclinic:$_TAG_NAME'
       - '.'
 
-  # Step 2: Push the Docker image to Artifact Registry
+  # Step 3: Push the Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
