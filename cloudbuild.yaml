@@ -1,6 +1,6 @@
 steps:
   # Step 1: Build the Java code using Maven
-  - name: 'maven:3.8.8-openjdk-17'
+  - name: 'maven:3.9.4-openjdk-20-slim'
     entrypoint: 'mvn'
     args:
       - 'clean'
