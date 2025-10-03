@@ -37,6 +37,7 @@ substitutions:
   _PROJECT_ID: 'xebia-petclinic-dev'
   _REPOSITORY_NAME: 'petclinic-app'
   _TAG_NAME: 'latest'
+  _LOCATION: 'europe-west1'
 
 options:
   logging: CLOUD_LOGGING_ONLY
