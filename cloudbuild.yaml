@@ -25,7 +25,7 @@ steps:
       - 'releases'
       - 'create'
       - 'petclinic-release-$_TAG_NAME'
-      - '--delivery-pipeline=petclinic-pipeline'
+      - '--delivery-pipeline=petclinic-deploy-dev'
       - '--region=us-west1'
       - '--annotations=commit_sha=$COMMIT_SHA'
       - '--images=spring-petclinic=$_LOCATION-docker.pkg.dev/$_PROJECT_ID/$_REPOSITORY_NAME/spring-petclinic:$_TAG_NAME'
