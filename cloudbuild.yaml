@@ -1,5 +1,4 @@
 steps:
-  # Step 1: Build the Java code using Maven
   - name: 'maven:3.9.4-eclipse-temurin-17'
     entrypoint: 'mvn'
     args:
@@ -7,7 +6,6 @@ steps:
       - 'package'
       - '-DskipTests'
 
-  # Step 2: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
@@ -15,11 +13,22 @@ steps:
       - '$_LOCATION-docker.pkg.dev/$_PROJECT_ID/$_REPOSITORY_NAME/spring-petclinic:$_TAG_NAME'
       - '.'
 
-  # Step 3: Push the Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - '$_LOCATION-docker.pkg.dev/$_PROJECT_ID/$_REPOSITORY_NAME/spring-petclinic:$_TAG_NAME'
+
+    # Step 3: Trigger Cloud Deploy release
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'deploy'
+      - 'releases'
+      - 'create'
+      - 'petclinic-release-$_TAG_NAME'
+      - '--delivery-pipeline=petclinic-pipeline'
+      - '--region=us-west1'
+      - '--annotations=commit_sha=$COMMIT_SHA'
+      - '--images=spring-petclinic=$_LOCATION-docker.pkg.dev/$_PROJECT_ID/$_REPOSITORY_NAME/spring-petclinic:$_TAG_NAME'
 
 images:
   - '$_LOCATION-docker.pkg.dev/$_PROJECT_ID/$_REPOSITORY_NAME/spring-petclinic:$_TAG_NAME'
@@ -27,7 +36,6 @@ images:
 substitutions:
   _PROJECT_ID: 'xebia-petclinic-dev'
   _REPOSITORY_NAME: 'petclinic-app'
-  _LOCATION: 'europe-west1' # Adjust the region as needed
   _TAG_NAME: 'latest'
 
 options:

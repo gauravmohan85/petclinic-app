@@ -1,0 +1,27 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipeline
+metadata:
+  name: petclinic-pipeline
+description: Pipeline to deploy Cloud Run services for petclinic-app
+serialPipeline:
+  stages:
+    #- targetId: us-west1
+     # profiles: []
+    - targetId: europe-west1
+      profiles: []
+---
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+  name: us-west1
+description: Target for deploying to Cloud Run in us-west1
+run:
+  location: us-west1
+---
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+  name: europe-west1
+description: Target for deploying to Cloud Run in europe-west1
+run:
+  location: europe-west1
