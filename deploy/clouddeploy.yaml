@@ -5,7 +5,7 @@ metadata:
 description: Pipeline to deploy Cloud Run services for petclinic-app
 serialPipeline:
   stages:
-    - targetId: petclinic-deploy-dev-target-1
+    - targetId: europe-west1
       profiles: [] # No profiles are being used here
 ---
 apiVersion: deploy.cloud.google.com/v1
