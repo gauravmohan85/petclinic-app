@@ -4,8 +4,7 @@ metadata:
   name: cloud-run-release
 render:
   manifests:
-    # Path to your Cloud Run manifest(s)
-    - deploy/service.yaml
+    - deploy/service.yaml # Path to your Cloud Run manifest(s)
 deploy:
   cloudRun:
     region: europe-west1 # Replace with your Cloud Run region
