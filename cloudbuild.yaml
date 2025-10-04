@@ -24,7 +24,7 @@ steps:
       - 'deploy'
       - 'releases'
       - 'create'
-      - 'petclinic-release-$COMMIT_SH'
+      - 'petclinic-release-$COMMIT_SHA'
       - '--delivery-pipeline=petclinic-deploy-dev'
       - '--region=$_LOCATION'
       - '--annotations=commit_sha=$COMMIT_SHA'
