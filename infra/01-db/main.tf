@@ -12,8 +12,7 @@ resource "google_sql_database_instance" "primary" {
     tier = "db-f1-micro"
 
     ip_configuration {
-    
-      ipv4_enabled       = true
+      ipv4_enabled = true
     }
   }
 
@@ -21,21 +20,28 @@ resource "google_sql_database_instance" "primary" {
 }
 
 resource "google_sql_database_instance" "read_replica" {
-  name             = "${var.db_instance_name}-replica"
-  database_version = "POSTGRES_13"
-  region           = var.read_replica_region
+  name                 = "${var.db_instance_name}-replica"
+  database_version     = "POSTGRES_13"
+  region               = var.read_replica_region
   master_instance_name = google_sql_database_instance.primary.name
 
   settings {
     tier = "db-f1-micro"
 
     ip_configuration {
-     
-      ipv4_enabled       = true
+      ipv4_enabled = true
     }
   }
 }
 
+# Create a database user
+resource "google_sql_user" "db_user" {
+  name     = var.db_user
+  instance = google_sql_database_instance.primary.name
+  password = var.db_password
+}
+
+# Outputs
 output "primary_instance_connection_name" {
   value = google_sql_database_instance.primary.connection_name
 }
