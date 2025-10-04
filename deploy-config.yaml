@@ -1,0 +1,13 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: ReleaseConfig
+metadata:
+  name: cloud-run-release
+render:
+  manifests:
+    # Path to your Cloud Run manifest(s)
+    - deploy/service.yaml
+deploy:
+  cloudRun:
+    region: europe-west1 # Replace with your Cloud Run region
+    service: spring-petclinic-eu-west1 # Replace with your Cloud Run service name
+    project: xebia-petclinic-dev # Replace with your Google Cloud project ID
