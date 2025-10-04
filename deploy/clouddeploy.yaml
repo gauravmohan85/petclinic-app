@@ -7,14 +7,14 @@ serialPipeline:
   stages:
     - targetId: europe-west1
       profiles: [] # No profiles are being used here
----
-apiVersion: deploy.cloud.google.com/v1
-kind: Target
-metadata:
-  name: us-west1
-description: Target for deploying to Cloud Run in us-west1
-run:
-  location: us-west1
+#---
+#apiVersion: deploy.cloud.google.com/v1
+#kind: Target
+#metadata:
+#  name: us-west1
+#description: Target for deploying to Cloud Run in us-west1
+3run:
+#  location: us-west1
 ---
 apiVersion: deploy.cloud.google.com/v1
 kind: Target
