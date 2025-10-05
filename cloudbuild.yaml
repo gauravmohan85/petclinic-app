@@ -18,27 +18,22 @@ steps:
       - 'push'
       - '$_LOCATION-docker.pkg.dev/$_PROJECT_ID/$_REPOSITORY_NAME/spring-petclinic:$_TAG_NAME'
 
-  # Step 3: Create a unique release name using a timestamp
-  - name: 'bash'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        TIMESTAMP=$(date +%Y%m%d%H%M%S)
-        echo "petclinic-release-$TIMESTAMP" > /workspace/release_name.txt
-
-  # Step 4: Trigger Cloud Deploy release
+  # Step 3: Trigger Cloud Deploy release with a unique release name
   - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
+    id: 'create-release'
+    entrypoint: '/bin/sh'
     args:
       - '-c'
       - |
-        RELEASE_NAME=$(cat /workspace/release_name.txt)
+        # Create a unique release name (manually constructed)
+        RELEASE_NAME="petclinic-release-$(date +%Y%m%d-%H%M%S)"
+        
+        # Create the Cloud Deploy release
         gcloud deploy releases create "$RELEASE_NAME" \
           --delivery-pipeline=petclinic-deploy-dev \
-          --region=${_LOCATION} \
-          --annotations=commit_sha=${COMMIT_SHA} \
-          --images=spring-petclinic=${_LOCATION}-docker.pkg.dev/${_PROJECT_ID}/${_REPOSITORY_NAME}/spring-petclinic:${_TAG_NAME}
+          --region=$_LOCATION \
+          --annotations=commit_sha=$COMMIT_SHA \
+          --images=spring-petclinic=$_LOCATION-docker.pkg.dev/$_PROJECT_ID/$_REPOSITORY_NAME/spring-petclinic:$_TAG_NAME
 
 images:
   - '$_LOCATION-docker.pkg.dev/$_PROJECT_ID/$_REPOSITORY_NAME/spring-petclinic:$_TAG_NAME'
