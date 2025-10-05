@@ -11,6 +11,13 @@ resource "google_cloud_run_service" "service_primary" {
   location = var.region_primary
 
   template {
+    metadata {
+      annotations = {
+        "run.googleapis.com/vpc-access-connector" = google_vpc_access_connector.connector.name
+        "run.googleapis.com/vpc-access-egress"    = "all-traffic"
+        "run.googleapis.com/cloudsql-instances"   = "xebia-petclinic-dev:europe-west1:petclinic-dev-db"
+      }
+    }
     spec {
       #service_account_name = google_service_account.petclinic_service_account.email
       containers {
@@ -45,6 +52,13 @@ resource "google_cloud_run_service" "service_secondary" {
   location = var.region_secondary
 
   template {
+    metadata {
+      annotations = {
+        "run.googleapis.com/vpc-access-connector" = google_vpc_access_connector.connector.name
+        "run.googleapis.com/vpc-access-egress"    = "all-traffic"
+        "run.googleapis.com/cloudsql-instances"   = "xebia-petclinic-dev:europe-west1:petclinic-dev-db"
+      }
+    }
     spec {
       #service_account_name = google_service_account.petclinic_service_account.email
       containers {
