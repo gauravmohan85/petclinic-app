@@ -12,7 +12,6 @@ profiles:
         region: europe-west1
         service: spring-petclinic-eu-west1
         project: xebia-petclinic-dev
-profiles:
   - name: us-west1-dev
     deploy:
       cloudRun:
