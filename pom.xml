@@ -48,6 +48,13 @@
             <type>pom</type>
             <scope>import</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>spring-cloud-gcp-dependencies</artifactId>
+            <version>4.8.4</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -158,7 +165,7 @@
       <artifactId>jakarta.xml.bind-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework.cloud</groupId>
+      <groupId>com.google.cloud</groupId>
       <artifactId>spring-cloud-gcp-starter-secretmanager</artifactId>
       <version>2.0.8</version>
     </dependency>
@@ -321,6 +328,11 @@
       <id>spring-milestones</id>
       <name>Spring Milestones</name>
       <url>https://repo.spring.io/milestone</url>
+    </repository>
+    <repository>
+        <id>google-maven</id>
+        <name>Google Maven Repository</name>
+        <url>https://maven.pkg.dev/cloud-spanner-driver/cloud-spanner-hibernate</url>
     </repository>
   </repositories>
   <pluginRepositories>
