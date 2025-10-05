@@ -3,6 +3,7 @@ kind: ReleaseConfig
 metadata:
   name: cloud-run-release
 render:
+  renderer: "clouddeploy"  # Add this line to specify the renderer
   manifests:
     - deploy/service.yaml # Path to your Cloud Run manifest(s)
 profiles:
@@ -18,8 +19,3 @@ profiles:
         region: us-west1
         service: spring-petclinic-eu-west1
         project: xebia-petclinic-dev
-#deploy:
- # cloudRun:
-  #  region: europe-west1
-  #  service: spring-petclinic-eu-west1
-  #  project: xebia-petclinic-dev
