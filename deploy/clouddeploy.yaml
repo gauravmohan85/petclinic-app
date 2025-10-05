@@ -17,7 +17,7 @@ metadata:
   name: target-1
 description: Target for deploying to Cloud Run in europe-west1
 run:
-  location: europe-west1
+  location: projects/_PROJECT_ID/locations/europe-west1
 
 
 ---
@@ -27,4 +27,4 @@ metadata:
   name: target-2
 description: Target for deploying to Cloud Run in europe-west1
 run:
-  location: us-west1
+  location: projects/_PROJECT_ID/locations/europe-west1
