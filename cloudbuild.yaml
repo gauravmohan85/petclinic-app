@@ -19,16 +19,34 @@ steps:
       - '$_LOCATION-docker.pkg.dev/$_PROJECT_ID/$_REPOSITORY_NAME/spring-petclinic:$_TAG_NAME'
 
     # Step 3: Trigger Cloud Deploy release
+  #- name: 'gcr.io/cloud-builders/gcloud'
+  #  args:
+  #    - 'deploy'
+  #    - 'releases'
+  #    - 'create'
+  #    - 'petclinic-release'
+  #    - '--delivery-pipeline=petclinic-deploy-dev'
+  #    - '--region=$_LOCATION'
+  #    - '--annotations=commit_sha=$COMMIT_SHA'
+  #    - '--images=spring-petclinic=$_LOCATION-docker.pkg.dev/$_PROJECT_ID/$_REPOSITORY_NAME/spring-petclinic:$_TAG_NAME'
+
   - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: bash
     args:
-      - 'deploy'
-      - 'releases'
-      - 'create'
-      - 'petclinic-release'
-      - '--delivery-pipeline=petclinic-deploy-dev'
-      - '--region=$_LOCATION'
-      - '--annotations=commit_sha=$COMMIT_SHA'
-      - '--images=spring-petclinic=$_LOCATION-docker.pkg.dev/$_PROJECT_ID/$_REPOSITORY_NAME/spring-petclinic:$_TAG_NAME'
+      - '-c'
+      - |
+        SHORT_SHA=$(echo "$COMMIT_SHA" | cut -c1-7)
+        BUILD_SUFFIX=$(echo "$BUILD_ID" | rev | cut -c1-4 | rev)
+        RELEASE_NAME="petclinic-${SHORT_SHA}-${BUILD_SUFFIX}"
+
+        echo "Creating Cloud Deploy release: $RELEASE_NAME"
+
+        gcloud deploy releases create "$RELEASE_NAME" \
+          --delivery-pipeline=petclinic-deploy-dev \
+          --region="$_LOCATION" \
+          --annotations=commit_sha="$COMMIT_SHA" \
+          --images="spring-petclinic=$_LOCATION-docker.pkg.dev/$_PROJECT_ID/$_REPOSITORY_NAME/spring-petclinic:$_TAG_NAME"
+
 
 images:
   - '$_LOCATION-docker.pkg.dev/$_PROJECT_ID/$_REPOSITORY_NAME/spring-petclinic:$_TAG_NAME'
