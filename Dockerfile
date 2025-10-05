@@ -8,7 +8,7 @@ WORKDIR /app
 # Assuming the application is built using Maven or Gradle and the JAR is in the target directory
 COPY target/*.jar app.jar
 
-#ENV SPRING_PROFILES_ACTIVE=postgres
+ENV SPRING_PROFILES_ACTIVE=postgres
 
 # Expose port 8080 for the application
 EXPOSE 8080
