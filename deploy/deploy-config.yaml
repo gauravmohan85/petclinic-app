@@ -5,8 +5,22 @@ metadata:
 render:
   manifests:
     - deploy/service.yaml # Path to your Cloud Run manifest(s)
-deploy:
-  cloudRun:
-    region: europe-west1 # Replace with your Cloud Run region
-    service: spring-petclinic-eu-west1 # Replace with your Cloud Run service name
-    project: xebia-petclinic-dev # Replace with your Google Cloud project ID
+profiles:
+  - name: europe-west1-dev
+    deploy:
+      cloudRun:
+        region: europe-west1
+        service: spring-petclinic-eu-west1
+        project: xebia-petclinic-dev
+profiles:
+  - name: us-west1-dev
+    deploy:
+      cloudRun:
+        region: us-west1
+        service: spring-petclinic-eu-west1
+        project: xebia-petclinic-dev
+#deploy:
+ # cloudRun:
+  #  region: europe-west1
+  #  service: spring-petclinic-eu-west1
+  #  project: xebia-petclinic-dev

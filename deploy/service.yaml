@@ -2,6 +2,8 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: my-service   # Cloud Run service name
+  annotations:
+    run.googleapis.com/ingress: all
   namespace: default
 spec:
   template:
