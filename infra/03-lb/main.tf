@@ -12,17 +12,17 @@ resource "google_cloud_run_service" "service_primary" {
 
   template {
     spec {
-      service_account_name = google_service_account.petclinic_service_account.email
+      #service_account_name = google_service_account.petclinic_service_account.email
       containers {
         image = var.service_image
-         env {
-          name  = "SPRING_PROFILES_ACTIVE"
-          value = "cloudrun,postgres"
-        }
-        env {
-          name  = "POSTGRES_URL"
-          value = "jdbc:postgresql://${var.db_connection_name}/petclinic"
-        }
+         #env {
+         # name  = "SPRING_PROFILES_ACTIVE"
+         # value = "postgres"
+        #}
+        #env {
+         # name  = "POSTGRES_URL"
+         # value = "jdbc:postgresql://${var.db_connection_name}/petclinic"
+        #}
       }
     }
   }
@@ -46,17 +46,17 @@ resource "google_cloud_run_service" "service_secondary" {
 
   template {
     spec {
-      service_account_name = google_service_account.petclinic_service_account.email
+      #service_account_name = google_service_account.petclinic_service_account.email
       containers {
         image = var.service_image
-         env {
-          name  = "SPRING_PROFILES_ACTIVE"
-          value = "cloudrun,postgres"
-        }
-        env {
-          name  = "POSTGRES_URL"
-          value = "jdbc:postgresql://${var.db_connection_name}/petclinic"
-        }
+         #env {
+         # name  = "SPRING_PROFILES_ACTIVE"
+          #value = "cloudrun,postgres"
+        #}
+        #env {
+         # name  = "POSTGRES_URL"
+         # value = "jdbc:postgresql://${var.db_connection_name}/petclinic"
+        #}
       }
     }
   }
@@ -120,6 +120,68 @@ resource "google_compute_backend_service" "backend" {
 resource "google_compute_url_map" "url_map" {
   name            = "cloud-run-url-map"
   default_service = google_compute_backend_service.backend.id
+
+  # Create a host rule to direct to the path matcher
+  host_rule {
+    hosts        = ["*"]
+    path_matcher = "region-matcher"
+  }
+
+  # Path matcher contains the route rules
+  path_matcher {
+    name            = "region-matcher"
+    default_service = google_compute_backend_service.backend.id
+    
+    # Route for US-based traffic to US backend
+    route_rules {
+      priority = 1
+      match_rules {
+        prefix_match = "/"
+        header_matches {
+          header_name = "X-Client-Region"
+          exact_match = "US"
+        }
+      }
+      service = google_compute_backend_service.backend_us.id
+    }
+
+    # Route for EU-based traffic to EU backend
+    route_rules {
+      priority = 2
+      match_rules {
+        prefix_match = "/"
+        header_matches {
+          header_name = "X-Client-Region"
+          exact_match = "EU"
+        }
+      }
+      service = google_compute_backend_service.backend_eu.id
+    }
+  }
+}
+
+# Separate Backend Service for US Region
+resource "google_compute_backend_service" "backend_us" {
+  name        = "cloud-run-backend-us"
+  protocol    = "HTTP"
+  timeout_sec = 30
+
+  backend {
+    group = google_compute_region_network_endpoint_group.neg_primary.id
+  }
+
+}
+
+# Separate Backend Service for EU Region
+resource "google_compute_backend_service" "backend_eu" {
+  name        = "cloud-run-backend-eu"
+  protocol    = "HTTP"
+  timeout_sec = 30
+
+  backend {
+    group = google_compute_region_network_endpoint_group.neg_secondary.id
+  }
+
 }
 
 # -----------------------------
@@ -141,13 +203,13 @@ resource "google_compute_global_forwarding_rule" "http_forwarding" {
   load_balancing_scheme = "EXTERNAL"
 }
 
-resource "google_service_account" "petclinic_service_account" {
+/*resource "google_service_account" "petclinic_service_account" {
   account_id   = "petclinic-sa"
   display_name = "PetClinic Service Account"
-}
+}*/
 
-resource "google_project_iam_member" "secret_accessor" {
+/*resource "google_project_iam_member" "secret_accessor" {
   project = var.project_id
   role    = "roles/secretmanager.secretAccessor"
   member  = "serviceAccount:${google_service_account.petclinic_service_account.email}"
-}
+}*/
