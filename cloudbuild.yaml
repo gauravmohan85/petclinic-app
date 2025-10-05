@@ -36,8 +36,7 @@ steps:
       - '-c'
       - |
         SHORT_SHA=$(echo "$COMMIT_SHA" | cut -c1-7)
-        SUFFIX=$(echo "$BUILD_ID" | rev | cut -c1-4 | rev)
-        RELEASE_NAME="petclinic-${SHORT_SHA}-${SUFFIX}"
+        RELEASE_NAME="petclinic-${SHORT_SHA}"
 
         echo "Creating Cloud Deploy release: $RELEASE_NAME"
 
