@@ -6,13 +6,13 @@ render:
   manifests:
     - deploy/service.yaml # Path to your Cloud Run manifest(s)
 profiles:
-  - name: europe-west1-dev
+  - name: target-1
     deploy:
       cloudRun:
         region: europe-west1
         service: spring-petclinic-eu-west1
         project: xebia-petclinic-dev
-  - name: us-west1-dev
+  - name: target-2
     deploy:
       cloudRun:
         region: us-west1
