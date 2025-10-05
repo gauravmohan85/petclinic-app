@@ -12,8 +12,17 @@ resource "google_cloud_run_service" "service_primary" {
 
   template {
     spec {
+      service_account_name = google_service_account.petclinic_service_account.email
       containers {
         image = var.service_image
+         env {
+          name  = "SPRING_PROFILES_ACTIVE"
+          value = "cloudrun,postgres"
+        }
+        env {
+          name  = "POSTGRES_URL"
+          value = "jdbc:postgresql://${var.db_connection_name}/petclinic"
+        }
       }
     }
   }
@@ -37,8 +46,17 @@ resource "google_cloud_run_service" "service_secondary" {
 
   template {
     spec {
+      service_account_name = google_service_account.petclinic_service_account.email
       containers {
         image = var.service_image
+         env {
+          name  = "SPRING_PROFILES_ACTIVE"
+          value = "cloudrun,postgres"
+        }
+        env {
+          name  = "POSTGRES_URL"
+          value = "jdbc:postgresql://${var.db_connection_name}/petclinic"
+        }
       }
     }
   }
@@ -121,4 +139,15 @@ resource "google_compute_global_forwarding_rule" "http_forwarding" {
   port_range            = "80"
   target                = google_compute_target_http_proxy.http_proxy.id
   load_balancing_scheme = "EXTERNAL"
+}
+
+resource "google_service_account" "petclinic_service_account" {
+  account_id   = "petclinic-sa"
+  display_name = "PetClinic Service Account"
+}
+
+resource "google_project_iam_member" "secret_accessor" {
+  project = var.project_id
+  role    = "roles/secretmanager.secretAccessor"
+  member  = "serviceAccount:${google_service_account.petclinic_service_account.email}"
 }
