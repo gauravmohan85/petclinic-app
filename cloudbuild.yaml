@@ -26,7 +26,7 @@ steps:
       - '-c'
       - |
         # Create the Cloud Deploy release
-        gcloud deploy releases create petclinic-release-`date +%Y%m%d-%H%M%S` \
+        gcloud deploy releases create pc-`date +%Y%m%d-%H%M%S` \
           --delivery-pipeline=petclinic-deploy-dev \
           --region=$_LOCATION \
           --annotations=commit_sha=$COMMIT_SHA \
