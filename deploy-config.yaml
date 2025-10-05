@@ -3,9 +3,9 @@ kind: ReleaseConfig
 metadata:
   name: cloud-run-release
 render:
-  renderer: "clouddeploy"  # Add this line to specify the renderer
-  manifests:
-    - deploy/service.yaml # Path to your Cloud Run manifest(s)
+  kubernetes:
+    manifests:
+      - deploy/service.yaml # Path to your Cloud Run manifest(s)
 profiles:
   - name: target-1
     deploy:
