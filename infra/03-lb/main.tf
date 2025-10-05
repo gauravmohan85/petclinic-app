@@ -7,7 +7,7 @@ provider "google" {
 # Cloud Run Services
 # -----------------------------
 resource "google_cloud_run_service" "service_primary" {
-  name     = "petclinic-dev-europe-west1"
+  name     = "petclinic-dev"
   location = var.region_primary
 
   template {
@@ -22,10 +22,17 @@ resource "google_cloud_run_service" "service_primary" {
     percent         = 100
     latest_revision = true
   }
+
+  # Only allow traffic from internal sources and the load balancer
+  metadata {
+    annotations = {
+      "run.googleapis.com/ingress" = "internal-and-cloud-load-balancing"
+    }
+  }
 }
 
 resource "google_cloud_run_service" "service_secondary" {
-  name     = "petclinic-dev-us-west1"
+  name     = "petclinic-dev"
   location = var.region_secondary
 
   template {
@@ -39,6 +46,13 @@ resource "google_cloud_run_service" "service_secondary" {
   traffic {
     percent         = 100
     latest_revision = true
+  }
+
+  # Only allow traffic from internal sources and the load balancer
+  metadata {
+    annotations = {
+      "run.googleapis.com/ingress" = "internal-and-cloud-load-balancing"
+    }
   }
 }
 
