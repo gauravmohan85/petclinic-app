@@ -3,3 +3,20 @@ terraform.tfstate
 terraform.tfstate.backup
 .terraform.lock.hcl
 .terraform/
+.infra/01-db/.terraform/
+.infra/01-db/.terraform.lock.hcl
+.infra/01-db/terraform.tfstate
+.infra/01-db/terraform.tfstate.backup
+infra/02-app/.terraform/
+infra/02-app/.terraform.lock.hcl
+infra/02-app/terraform.tfstate
+infra/02-app/terraform.tfstate.backup
+infra/03-lb/.terraform/
+infra/03-lb/.terraform.lock.hcl
+infra/03-lb/terraform.tfstate
+infra/03-lb/terraform.tfstate.backup
+# Ignore all Terraform state files
+**/*.tfstate
+**/*.tfstate.*
+.gradle/8.14.3/fileHashes/fileHashes.lock
+.DS_Store
