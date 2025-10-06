@@ -1,0 +1,19 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: petclinic-dev   # Cloud Run service name
+  annotations:
+    run.googleapis.com/ingress: all
+  namespace: default
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/vpc-access-connector: vpc-connector-us1
+        run.googleapis.com/vpc-access-egress: all-traffic
+        run.googleapis.com/cloudsql-instances: xebia-petclinic-dev:europe-west1:petclinic-dev-db
+    spec:
+      containers:
+        - image: spring-petclinic:latest   # Will be replaced by Cloud Deploy
+          ports:
+            - containerPort: 8080

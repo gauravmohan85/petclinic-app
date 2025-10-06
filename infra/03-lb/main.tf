@@ -3,9 +3,28 @@ provider "google" {
   region  = var.region_primary
 }
 
-# -----------------------------
-# Cloud Run Services
-# -----------------------------
+resource "google_vpc_access_connector" "connector_primary" {
+  name          = "vpc-connector-eu1"
+  region        = var.region_primary
+  ip_cidr_range = "10.89.0.0/28"
+  network       = "default"
+
+   # Optional: Specify min and max instances
+  min_instances = 2
+  max_instances = 3
+  
+}
+
+resource "google_vpc_access_connector" "connector_secondary" {
+  name          = "vpc-connector-us1"
+  region        = var.region_secondary
+  ip_cidr_range = "10.90.0.0/28"  # Use a different CIDR range to avoid conflicts
+  network       = "default"
+  
+  min_instances = 2
+  max_instances = 3
+}
+
 resource "google_cloud_run_service" "service_primary" {
   name     = "petclinic-dev"
   location = var.region_primary
@@ -13,7 +32,7 @@ resource "google_cloud_run_service" "service_primary" {
   template {
     metadata {
       annotations = {
-        "run.googleapis.com/vpc-access-connector" = google_vpc_access_connector.connector.name
+        "run.googleapis.com/vpc-access-connector" = google_vpc_access_connector.connector_primary.name
         "run.googleapis.com/vpc-access-egress"    = "all-traffic"
         "run.googleapis.com/cloudsql-instances"   = "xebia-petclinic-dev:europe-west1:petclinic-dev-db"
       }
@@ -54,7 +73,7 @@ resource "google_cloud_run_service" "service_secondary" {
   template {
     metadata {
       annotations = {
-        "run.googleapis.com/vpc-access-connector" = google_vpc_access_connector.connector.name
+        "run.googleapis.com/vpc-access-connector" = google_vpc_access_connector.connector_secondary.name
         "run.googleapis.com/vpc-access-egress"    = "all-traffic"
         "run.googleapis.com/cloudsql-instances"   = "xebia-petclinic-dev:europe-west1:petclinic-dev-db"
       }

@@ -6,10 +6,10 @@ profiles:
 - name: target-1
   manifests:
     rawYaml:
-    - service.yaml
+    - service-eu.yaml
 - name: target-2
   manifests:
     rawYaml:
-    - service.yaml
+    - service-us.yaml
 deploy:
   cloudrun: {}
