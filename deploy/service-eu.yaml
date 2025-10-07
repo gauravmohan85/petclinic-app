@@ -9,7 +9,7 @@ spec:
   template:
     metadata:
       annotations:
-        run.googleapis.com/vpc-access-connector: vpc-connector-eu1
+        run.googleapis.com/vpc-access-connector: vpc-connector-eu8
         run.googleapis.com/vpc-access-egress: all-traffic
         run.googleapis.com/cloudsql-instances: xebia-petclinic-dev:europe-west1:petclinic-dev-db
         autoscaling.knative.dev/minScale: "1"  
