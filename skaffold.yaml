@@ -12,9 +12,4 @@ profiles:
     rawYaml:
     - deploy/service-us.yaml
 deploy:
-  cloudrun: 
-    flags:
-      - "--min-instances=1"
-      - "--max-instances=10"
-      - "--concurrency=80"
-      - "--cpu-throttling"
+  cloudrun: {}
