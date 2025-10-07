@@ -21,6 +21,12 @@ spec:
         - image: spring-petclinic:latest  
           ports:
             - containerPort: 8080
+          env:
+            - name: GCP_REGION
+              value: "europe-west1"
+            # If you want this region to fail, uncomment the following:
+            - name: FAIL_REGION
+              value: "europe-west1" 
           resources:
             limits:
               cpu: "1"
