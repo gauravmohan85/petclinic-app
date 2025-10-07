@@ -1,3 +1,4 @@
 # petclinic-app
-test3
-modified
+
+# Disable traffic
+gcloud run services update petclinic-dev --no-traffic

@@ -1,7 +1,0 @@
-project_id             = "xebia-petclinic-dev"
-repository_name        = "petclinic-app"
-artifact_registry_location = "europe-west1"
-image_name             = "spring-petclinic"
-image_tag              = "latest"
-service_name_prefix    = "petclinic-app-dev"
-default_region         = "europe-west1"

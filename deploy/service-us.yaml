@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: petclinic-dev   # Cloud Run service name
   annotations:
-    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress: internal-and-cloud-load-balancing
   namespace: default
 spec:
   template:
@@ -12,8 +12,17 @@ spec:
         run.googleapis.com/vpc-access-connector: vpc-connector-us1
         run.googleapis.com/vpc-access-egress: all-traffic
         run.googleapis.com/cloudsql-instances: xebia-petclinic-dev:europe-west1:petclinic-dev-db
+        autoscaling.knative.dev/minScale: "1"  
+        autoscaling.knative.dev/maxScale: "10"
+        autoscaling.knative.dev/target: "80"
+        autoscaling.knative.dev/targetUtilizationPercentage: "70"
     spec:
       containers:
         - image: spring-petclinic:latest   # Will be replaced by Cloud Deploy
           ports:
             - containerPort: 8080
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+          containerConcurrency: 100
