@@ -1,4 +1,2 @@
 # petclinic-app
-
-# Disable traffic
-gcloud run services update petclinic-dev --no-traffic
+Please use the terraform scripts in deploy/infra for application deployment
